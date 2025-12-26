@@ -1,4 +1,19 @@
 (function () {
+    // ===== DOMAIN GUARD (anti-casual copy/paste) =====
+  const ALLOWED_HOSTS = new Set([
+  "peacebuilderacademy.com",
+  "www.peacebuilderacademy.com",
+  "peacebuilderacademy.mykajabi.com",
+  "www.peacebuilderacademy.mykajabi.com",
+  "localhost" // optional, dev only
+]);
+  
+  if (!ALLOWED_HOSTS.has(window.location.hostname)) {
+    console.warn("[PBA] Blocked: unauthorized host", window.location.hostname);
+    return;
+  }
+  // ===== END DOMAIN GUARD =====
+
   if (window.__PBA_WIDGET_LOADED__) return;
   window.__PBA_WIDGET_LOADED__ = true;
 
