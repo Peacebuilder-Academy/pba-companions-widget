@@ -19,26 +19,41 @@
 
   const WIDGET_URL = "https://peacebuilder-academy.github.io/pba-companions-widget/pba_widget.html";
 
-  function mount() {
-    fetch(WIDGET_URL, { cache: "no-store" })
-      .then((r) => r.text())
-      .then((html) => {
-        const host = document.createElement("div");
-        host.id = "pba-widget-host";
-        host.innerHTML = html;
-        document.body.appendChild(host);
+function mount() {
+  // prevent duplicate mount
+  if (document.getElementById("pba-widget-iframe")) return;
 
-        // Re-run any inline <script> tags inside the injected HTML
-        host.querySelectorAll("script").forEach((old) => {
-          const s = document.createElement("script");
-          if (old.src) s.src = old.src;
-          s.text = old.textContent || "";
-          document.head.appendChild(s);
-          old.remove();
-        });
-      })
-      .catch((e) => console.error("PBA loader error:", e));
+  // Create iframe (isolated widget world)
+  const iframe = document.createElement("iframe");
+  iframe.id = "pba-widget-iframe";
+  iframe.src = WIDGET_URL;
+  iframe.title = "PBA Companions";
+  iframe.loading = "lazy";
+
+  // Style: fixed, non-invasive
+  Object.assign(iframe.style, {
+    position: "fixed",
+    right: "16px",
+    bottom: "16px",
+    width: "420px",
+    height: "640px",
+    border: "0",
+    borderRadius: "18px",
+    overflow: "hidden",
+    zIndex: "2147483000",
+    background: "transparent"
+  });
+
+  // Mobile sizing
+  if (window.matchMedia("(max-width: 520px)").matches) {
+    iframe.style.width = "92vw";
+    iframe.style.height = "70vh";
+    iframe.style.right = "4vw";
+    iframe.style.bottom = "12px";
   }
+
+  document.body.appendChild(iframe);
+}
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
