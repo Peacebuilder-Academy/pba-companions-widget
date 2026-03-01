@@ -4,7 +4,7 @@
     --pba-aura-color:#7C3AED;   /* active companion aura (overwritten by [data-theme]) */
     --pba-accent:#7C3AED;       /* buttons & accents */
     --pba-user-bg:#E6F6EE;      /* user bubble bg (pale mint green) */
-    --pba-user-avatar:url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2148578038/settings_images/d7dbf5c-161d-e0b0-42e0-e0cc2c7512_8123a4fd-c37b-415b-bbf6-ccc2b515fa88.png');           /* personal/marketing default (LinkedIn) */
+    --pba-user-avatar:url(''https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2148578038/settings_images/26b54f5-e37a-533c-87-6cee4bb67bf_PBA_Favicon_temp_2.png');           /* personal/marketing default (LinkedIn) --> changed to PBA Favicon for public users*/
     --pba-user-avatar-public:url('https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2148578038/settings_images/26b54f5-e37a-533c-87-6cee4bb67bf_PBA_Favicon_temp_2.png'); /* public/free (favicon) */
     --pba-tooltip-bg:#111827;
     --pba-tooltip-fg:#fff;
