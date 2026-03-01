@@ -1708,15 +1708,20 @@ if(stageImg){
       pbaInput.style.height = Math.min(pbaInput.scrollHeight, 96) + 'px';
     }
     function updateState(){
-      const hasText = !!(pbaInput.value && pbaInput.value.trim());
-      if (hasText){
-        pbaSend.removeAttribute('disabled');
-        pbaSend.classList.add('active');   // your aura-themed enabled state
-      } else {
-        pbaSend.setAttribute('disabled','disabled');
-        pbaSend.classList.remove('active');
-      }
-    }
+  const hasText = !!(pbaInput.value && pbaInput.value.trim());
+
+  // Always target the current live Send button (important because we clone/replace it)
+  const liveSend = document.getElementById('pbaSend');
+  if (!liveSend) return;
+
+  if (hasText){
+    liveSend.removeAttribute('disabled');
+    liveSend.classList.add('active');   // keep your enabled styling
+  } else {
+    liveSend.setAttribute('disabled','disabled');
+    liveSend.classList.remove('active');
+  }
+}
 
     // initial UI state
     resize();
