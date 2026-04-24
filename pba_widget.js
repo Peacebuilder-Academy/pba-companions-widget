@@ -244,10 +244,28 @@
       0 2px 6px rgba(0,0,0,.04);
     font-size:14px;
     line-height:1.5;
-    white-space:pre-wrap;       /* respect line breaks */
+    white-space:pre-wrap;       /* respect line breaks (user bubbles) */
     overflow-wrap:anywhere;     /* wrap long words */
     word-break:break-word;      /* safety */
 }
+
+/* ===== Markdown rendering in agent bubbles ===== */
+.pba-msg:not(.me) .pba-msg-bubble { white-space:normal; }
+.pba-msg-bubble p { margin:0 0 0.5em; }
+.pba-msg-bubble p:last-child { margin-bottom:0; }
+.pba-msg-bubble ul, .pba-msg-bubble ol { margin:0.4em 0 0.4em 1.2em; padding:0; }
+.pba-msg-bubble li { margin:0.15em 0; }
+.pba-msg-bubble strong { font-weight:700; }
+.pba-msg-bubble em { font-style:italic; }
+.pba-msg-bubble code { font-family:monospace; background:rgba(0,0,0,.06); border-radius:3px; padding:1px 4px; font-size:0.88em; }
+.pba-msg-bubble pre { background:rgba(0,0,0,.05); border-radius:6px; padding:8px 10px; overflow-x:auto; margin:0.4em 0; }
+.pba-msg-bubble pre code { background:none; padding:0; }
+.pba-msg-bubble a { color:var(--pba-accent); text-decoration:underline; }
+.pba-msg-bubble a:hover { opacity:0.85; }
+.pba-msg-bubble h1,.pba-msg-bubble h2,.pba-msg-bubble h3 { font-weight:700; margin:0.5em 0 0.25em; line-height:1.3; }
+.pba-msg-bubble h1 { font-size:1.1em; }
+.pba-msg-bubble h2 { font-size:1.05em; }
+.pba-msg-bubble h3 { font-size:1em; }
 
 /* Agent messages (left side) */
 .pba-msg:not(.me) .pba-msg-bubble {
@@ -543,6 +561,9 @@
   </div>
 </div>
 <!-- ===== /EMAIL UNLOCK MODAL ===== -->
+
+<!-- marked.js — markdown renderer for companion chat bubbles -->
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
 
 <script>
 /* ===== PBA.handleSend — minimal connector to webhook (uses existing PBA.api.url) ===== */
@@ -1178,7 +1199,16 @@ PBA.uiAppend = function(role, text, opts = {}) {
   }
 
   const bubble = wrap.querySelector('.pba-msg-bubble');
-  bubble.textContent = text || '';
+  if (role === 'user') {
+    bubble.textContent = text || '';
+  } else {
+    // Render markdown for assistant messages; fall back to plain text if marked is unavailable
+    if (typeof marked !== 'undefined' && text) {
+      bubble.innerHTML = marked.parse(text, { breaks: true, gfm: true });
+    } else {
+      bubble.textContent = text || '';
+    }
+  }
 
   if (opts.faq === true) {
     const tag = document.createElement('div');
